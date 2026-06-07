@@ -63,7 +63,11 @@ export default function ChatPage() {
       .then((r) => r.json())
       .then(({ messages: loaded }) => {
         if (Array.isArray(loaded) && loaded.length > 0) {
-          setMessages(loaded);
+          setMessages(loaded.map((m: { role: Role; content: string; chunks?: CitedChunk[] }) => ({
+            role: m.role,
+            content: m.content,
+            chunks: m.chunks ?? undefined,
+          })));
           setTitleSet(true);
         }
       })
@@ -101,14 +105,24 @@ export default function ChatPage() {
         throw new Error(body.error ?? `Server error ${res.status}`);
       }
 
-      const { reply, citations, chunks } = await res.json();
+      const { reply, citations, chunks, title, shouldGenerateReport } = await res.json();
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: reply, citations, chunks },
       ]);
 
-      if (isFirstMessage) {
-        window.dispatchEvent(new CustomEvent("session-titled", { detail: { sessionId } }));
+      if (isFirstMessage && title) {
+        window.dispatchEvent(new CustomEvent("session-titled", { detail: { sessionId, title } }));
+      }
+
+      if (shouldGenerateReport) {
+        fetch("/api/progress/report", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        })
+          .then((r) => { if (r.ok) window.dispatchEvent(new CustomEvent("report-ready")); })
+          .catch(() => {});
       }
     } catch (err) {
       setMessages((prev) => prev.slice(0, -1));

@@ -42,6 +42,24 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ session: data });
 }
 
+export async function DELETE(req: NextRequest) {
+  const id = req.nextUrl.searchParams.get("id");
+  if (!id) {
+    return NextResponse.json({ error: "id is required" }, { status: 400 });
+  }
+
+  // Delete conversations first (no FK cascade on session_id)
+  await supabase.from("conversations").delete().eq("session_id", id);
+
+  const { error } = await supabase.from("sessions").delete().eq("id", id);
+  if (error) {
+    console.error("[DELETE /api/sessions]", error);
+    return NextResponse.json({ error: "Failed to delete session." }, { status: 500 });
+  }
+
+  return NextResponse.json({ ok: true });
+}
+
 export async function PATCH(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id");
   if (!id) {

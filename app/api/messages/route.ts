@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
   const { data, error } = await supabase
     .from("conversations")
-    .select("role, content")
+    .select("role, content, chunks")
     .eq("session_id", sessionId)
     .order("created_at", { ascending: true });
 
