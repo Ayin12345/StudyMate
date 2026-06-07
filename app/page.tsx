@@ -4,9 +4,17 @@ import { useState, useRef, useEffect } from "react";
 
 type Role = "user" | "assistant";
 
+interface CitedChunk {
+  index: number;
+  content: string;
+  document_title: string;
+}
+
 interface Message {
   role: Role;
   content: string;
+  citations?: number[];
+  chunks?: CitedChunk[];
 }
 
 function getOrCreateSessionId(): string {
@@ -19,6 +27,28 @@ function getOrCreateSessionId(): string {
   return id;
 }
 
+function renderAnswer(content: string) {
+  const parts = content.split(/(\[\d+\])/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        const match = part.match(/^\[(\d+)\]$/);
+        if (match) {
+          return (
+            <sup
+              key={i}
+              className="inline-flex items-center justify-center w-4 h-4 text-xs font-bold bg-blue-100 text-blue-700 rounded-full mx-0.5"
+            >
+              {match[1]}
+            </sup>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -27,7 +57,6 @@ export default function ChatPage() {
   const sessionIdRef = useRef<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Load session ID and conversation history on mount
   useEffect(() => {
     const sessionId = getOrCreateSessionId();
     sessionIdRef.current = sessionId;
@@ -66,8 +95,11 @@ export default function ChatPage() {
         throw new Error(body.error ?? `Server error ${res.status}`);
       }
 
-      const { reply } = await res.json();
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      const { reply, citations, chunks } = await res.json();
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: reply, citations, chunks },
+      ]);
     } catch (err) {
       setMessages((prev) => prev.slice(0, -1));
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -96,7 +128,7 @@ export default function ChatPage() {
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+            className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}
           >
             <div
               className={`max-w-[70%] rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap ${
@@ -105,8 +137,28 @@ export default function ChatPage() {
                   : "bg-white border border-gray-200 text-gray-900"
               }`}
             >
-              {msg.content}
+              {msg.role === "assistant" ? renderAnswer(msg.content) : msg.content}
             </div>
+
+            {/* Citation panel */}
+            {msg.role === "assistant" && msg.chunks && msg.chunks.length > 0 && (
+              <div className="mt-2 space-y-2 w-full max-w-[70%]">
+                {msg.chunks.map((chunk) => (
+                  <div
+                    key={chunk.index}
+                    className="border border-gray-200 rounded-xl p-3 bg-gray-50 text-xs"
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="inline-flex items-center justify-center w-4 h-4 text-xs font-bold bg-blue-100 text-blue-700 rounded-full shrink-0">
+                        {chunk.index}
+                      </span>
+                      <span className="font-semibold text-gray-700">{chunk.document_title}</span>
+                    </div>
+                    <p className="text-gray-500 leading-relaxed line-clamp-3">{chunk.content}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
 
