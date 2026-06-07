@@ -14,19 +14,21 @@ export default function DocumentsPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [extractedText, setExtractedText] = useState<string | null>(null);
   const [scanned, setScanned] = useState(false);
-  const [subject, setSubject] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
   const [title, setTitle] = useState("");
   const [extracting, setExtracting] = useState(false);
+  const [generatingTags, setGeneratingTags] = useState(false);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dupWarning, setDupWarning] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const sessionIdRef = useRef<string | null>(null);
+  const userIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     const userId = getUserId();
-    sessionIdRef.current = userId;
+    userIdRef.current = userId;
 
     fetch(`/api/documents?userId=${userId}`)
       .then((r) => r.json())
@@ -37,6 +39,25 @@ export default function DocumentsPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  async function generateTags(text: string) {
+    const userId = userIdRef.current;
+    if (!userId) return;
+    setGeneratingTags(true);
+    try {
+      const res = await fetch("/api/generate-tags", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, text }),
+      });
+      const { tags: generated } = await res.json();
+      if (Array.isArray(generated)) setTags(generated);
+    } catch {
+      // Non-fatal — user can add tags manually
+    } finally {
+      setGeneratingTags(false);
+    }
+  }
+
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -45,8 +66,9 @@ export default function DocumentsPage() {
     setScanned(false);
     setError(null);
     setDupWarning(false);
+    setTags([]);
+    setTagInput("");
     setTitle(file.name.replace(/\.[^.]+$/, ""));
-    setSubject("");
 
     if (file.name.toLowerCase().endsWith(".pdf")) {
       setExtracting(true);
@@ -63,6 +85,7 @@ export default function DocumentsPage() {
           setScanned(true);
         } else {
           setExtractedText(data.text);
+          generateTags(data.text);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Extraction failed.");
@@ -72,6 +95,7 @@ export default function DocumentsPage() {
     } else {
       const text = await file.text();
       setExtractedText(text);
+      generateTags(text);
     }
   }
 
@@ -80,8 +104,26 @@ export default function DocumentsPage() {
     setDupWarning(documents.some((d) => d.title.toLowerCase() === val.trim().toLowerCase()));
   }
 
+  function removeTag(tag: string) {
+    setTags((prev) => prev.filter((t) => t !== tag));
+  }
+
+  function addTag() {
+    const val = tagInput.trim();
+    if (!val || tags.includes(val)) return;
+    setTags((prev) => [...prev, val]);
+    setTagInput("");
+  }
+
+  function handleTagKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addTag();
+    }
+  }
+
   async function handleSave() {
-    if (!extractedText?.trim() || !subject.trim() || !title.trim() || !sessionIdRef.current) return;
+    if (!extractedText?.trim() || tags.length === 0 || !title.trim() || !userIdRef.current) return;
     setSaving(true);
     setError(null);
     try {
@@ -89,8 +131,8 @@ export default function DocumentsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: sessionIdRef.current,
-          subject: subject.trim(),
+          userId: userIdRef.current,
+          tags,
           title: title.trim(),
           text: extractedText,
         }),
@@ -103,7 +145,8 @@ export default function DocumentsPage() {
       setDocuments((prev) => [...prev, saved]);
       setExtractedText(null);
       setScanned(false);
-      setSubject("");
+      setTags([]);
+      setTagInput("");
       setTitle("");
       setDupWarning(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -155,36 +198,76 @@ export default function DocumentsPage() {
                 className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows={6}
                 placeholder="Paste your text here…"
-                onChange={(e) => setExtractedText(e.target.value || null)}
+                onChange={(e) => {
+                  const val = e.target.value || null;
+                  setExtractedText(val);
+                  if (val) generateTags(val);
+                }}
               />
             </div>
           )}
 
           {extractedText !== null && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+              {/* Tags */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tags{" "}
+                  {generatingTags && (
+                    <span className="text-gray-400 font-normal text-xs">generating…</span>
+                  )}
+                </label>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100"
+                    >
+                      {tag}
+                      <button
+                        onClick={() => removeTag(tag)}
+                        className="text-blue-400 hover:text-blue-700 leading-none"
+                        aria-label={`Remove ${tag}`}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  {tags.length === 0 && !generatingTags && (
+                    <span className="text-xs text-gray-400">No tags yet — add one below</span>
+                  )}
+                </div>
+                <div className="flex gap-2">
                   <input
                     type="text"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    placeholder="e.g. Linear Algebra"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={handleTagKeyDown}
+                    placeholder="Add a tag…"
+                    className="flex-1 rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
+                  <button
+                    onClick={addTag}
+                    disabled={!tagInput.trim()}
+                    className="px-3 py-1.5 rounded-lg text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-40 transition-colors"
+                  >
+                    Add
+                  </button>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => handleTitleChange(e.target.value)}
-                    placeholder="e.g. Week 3 Notes"
-                    className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      dupWarning ? "border-yellow-400" : "border-gray-300"
-                    }`}
-                  />
-                </div>
+              </div>
+
+              {/* Title */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => handleTitleChange(e.target.value)}
+                  placeholder="e.g. Week 3 Notes"
+                  className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    dupWarning ? "border-yellow-400" : "border-gray-300"
+                  }`}
+                />
               </div>
 
               {dupWarning && (
@@ -203,7 +286,7 @@ export default function DocumentsPage() {
 
               <button
                 onClick={handleSave}
-                disabled={!subject.trim() || !title.trim() || saving}
+                disabled={!title.trim() || tags.length === 0 || saving || generatingTags}
                 className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 {saving ? "Saving…" : "Save document"}
@@ -233,7 +316,16 @@ export default function DocumentsPage() {
                       >
                         <span className="text-gray-400 text-xs">{expandedId === doc.id ? "▾" : "▸"}</span>
                         <span className="font-medium text-gray-900 truncate">{doc.title}</span>
-                        <span className="text-xs text-gray-400 shrink-0">{doc.subject}</span>
+                        <div className="flex gap-1 shrink-0">
+                          {doc.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-1.5 py-0.5 rounded text-xs bg-blue-50 text-blue-600"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
                       </button>
                       <div className="flex items-center gap-3 ml-3 shrink-0">
                         <span className="text-xs text-gray-400">

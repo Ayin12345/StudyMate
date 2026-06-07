@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   const { data, error } = await supabase
     .from("documents")
-    .select("id, session_id, subject, title, text, date")
+    .select("id, tags, title, text, date")
     .eq("session_id", userId)
     .order("date", { ascending: true });
 
@@ -24,16 +24,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json() as { userId?: string; subject?: string; title?: string; text?: string };
-  const { userId, subject, title, text } = body;
+  const body = await req.json() as { userId?: string; tags?: string[]; title?: string; text?: string };
+  const { userId, tags, title, text } = body;
 
-  if (!userId || !subject?.trim() || !title?.trim() || !text?.trim()) {
-    return NextResponse.json({ error: "userId, subject, title, and text are required" }, { status: 400 });
+  if (!userId || !title?.trim() || !text?.trim() || !Array.isArray(tags) || tags.length === 0) {
+    return NextResponse.json({ error: "userId, title, tags, and text are required" }, { status: 400 });
   }
 
   const { data, error } = await supabase
     .from("documents")
-    .insert({ session_id: userId, subject: subject.trim(), title: title.trim(), text: text.trim() })
+    .insert({ session_id: userId, tags, title: title.trim(), text: text.trim() })
     .select()
     .single();
 

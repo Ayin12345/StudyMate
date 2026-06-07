@@ -1,6 +1,6 @@
 export interface StudyDocument {
   id: string;
-  subject: string;
+  tags: string[];
   title: string;
   text: string;
   date: string; // ISO string
