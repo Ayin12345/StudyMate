@@ -4,15 +4,15 @@ import { chunkText } from "@/lib/chunker";
 import { getEmbedding, EMBEDDING_MODEL } from "@/lib/embed";
 
 export async function GET(req: NextRequest) {
-  const sessionId = req.nextUrl.searchParams.get("sessionId");
-  if (!sessionId) {
-    return NextResponse.json({ error: "sessionId is required" }, { status: 400 });
+  const userId = req.nextUrl.searchParams.get("userId");
+  if (!userId) {
+    return NextResponse.json({ error: "userId is required" }, { status: 400 });
   }
 
   const { data, error } = await supabase
     .from("documents")
     .select("id, session_id, subject, title, text, date")
-    .eq("session_id", sessionId)
+    .eq("session_id", userId)
     .order("date", { ascending: true });
 
   if (error) {
@@ -24,16 +24,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json() as { sessionId?: string; subject?: string; title?: string; text?: string };
-  const { sessionId, subject, title, text } = body;
+  const body = await req.json() as { userId?: string; subject?: string; title?: string; text?: string };
+  const { userId, subject, title, text } = body;
 
-  if (!sessionId || !subject?.trim() || !title?.trim() || !text?.trim()) {
-    return NextResponse.json({ error: "sessionId, subject, title, and text are required" }, { status: 400 });
+  if (!userId || !subject?.trim() || !title?.trim() || !text?.trim()) {
+    return NextResponse.json({ error: "userId, subject, title, and text are required" }, { status: 400 });
   }
 
   const { data, error } = await supabase
     .from("documents")
-    .insert({ session_id: sessionId, subject: subject.trim(), title: title.trim(), text: text.trim() })
+    .insert({ session_id: userId, subject: subject.trim(), title: title.trim(), text: text.trim() })
     .select()
     .single();
 
@@ -62,7 +62,6 @@ export async function POST(req: NextRequest) {
     if (chunkError) throw chunkError;
   } catch (err) {
     console.error("[POST /api/documents] chunking/embedding failed", err);
-    // Rollback the document so no orphaned record without chunks
     await supabase.from("documents").delete().eq("id", data.id);
     return NextResponse.json(
       { error: "Document saved but embedding failed. Please try uploading again." },

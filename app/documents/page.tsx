@@ -3,14 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import type { StudyDocument } from "@/lib/types";
 
-function getSessionId(): string {
-  const key = "studymate_session_id";
-  let id = sessionStorage.getItem(key);
-  if (!id) {
-    id = crypto.randomUUID();
-    sessionStorage.setItem(key, id);
-  }
-  return id;
+function getUserId(): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(/(^| )studymate_user_id=([^;]+)/);
+  return match ? match[2] : null;
 }
 
 export default function DocumentsPage() {
@@ -29,10 +25,10 @@ export default function DocumentsPage() {
   const sessionIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const sessionId = getSessionId();
-    sessionIdRef.current = sessionId;
+    const userId = getUserId();
+    sessionIdRef.current = userId;
 
-    fetch(`/api/documents?sessionId=${sessionId}`)
+    fetch(`/api/documents?userId=${userId}`)
       .then((r) => r.json())
       .then(({ documents: loaded }) => {
         if (Array.isArray(loaded)) setDocuments(loaded);
@@ -93,7 +89,7 @@ export default function DocumentsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          sessionId: sessionIdRef.current,
+          userId: sessionIdRef.current,
           subject: subject.trim(),
           title: title.trim(),
           text: extractedText,

@@ -32,9 +32,9 @@ function extractJsonString(raw: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const { sessionId, content } = await req.json() as { sessionId: string; content: string };
+    const { sessionId, userId, content } = await req.json() as { sessionId: string; userId: string; content: string };
 
-    if (!sessionId || !content?.trim()) {
+    if (!sessionId || !userId || !content?.trim()) {
       return NextResponse.json({ error: "sessionId and content are required" }, { status: 400 });
     }
 
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
     const { data: chunks, error: rpcError } = await supabase.rpc("match_chunks", {
       query_embedding: queryEmbedding,
       match_count: 5,
-      p_session_id: sessionId,
+      p_session_id: userId,
     });
 
     if (rpcError) throw rpcError;
@@ -135,7 +135,27 @@ export async function POST(req: NextRequest) {
 
     if (insertError) throw insertError;
 
-    return NextResponse.json({ reply, citations, chunks: citedChunks });
+    // Generate a session title from the first user message
+    if (history.length === 0) {
+      client.messages
+        .create({
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 20,
+          messages: [
+            {
+              role: "user",
+              content: `Give this chat a short title of 3–6 words based on the question below. Reply with just the title, no punctuation at the end.\n\nQuestion: ${content}`,
+            },
+          ],
+        })
+        .then((r) => {
+          const title = r.content[0].type === "text" ? r.content[0].text.trim() : content.slice(0, 50);
+          return supabase.from("sessions").update({ title }).eq("id", sessionId);
+        })
+        .catch(() => {});
+    }
+
+    return NextResponse.json({ reply, citations, chunks: citedChunks, isFirstMessage: history.length === 0 });
   } catch (err) {
     console.error("[/api/chat]", err);
     return NextResponse.json({ error: "Failed to get a response from Claude." }, { status: 500 });
