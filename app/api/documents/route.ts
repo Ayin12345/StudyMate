@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { chunkText } from "@/lib/chunker";
+import { getEmbedding, EMBEDDING_MODEL } from "@/lib/embed";
 
 export async function GET(req: NextRequest) {
   const sessionId = req.nextUrl.searchParams.get("sessionId");
@@ -38,6 +40,34 @@ export async function POST(req: NextRequest) {
   if (error) {
     console.error("[POST /api/documents]", error);
     return NextResponse.json({ error: "Failed to save document." }, { status: 500 });
+  }
+
+  // Chunk, embed, and store vectors
+  try {
+    const chunks = chunkText(data.text);
+    const chunkRows = await Promise.all(
+      chunks.map(async (content, position) => {
+        const embedding = await getEmbedding(content);
+        return {
+          document_id: data.id,
+          position,
+          content,
+          embedding: JSON.stringify(embedding),
+          embedding_model: EMBEDDING_MODEL,
+        };
+      })
+    );
+
+    const { error: chunkError } = await supabase.from("chunks").insert(chunkRows);
+    if (chunkError) throw chunkError;
+  } catch (err) {
+    console.error("[POST /api/documents] chunking/embedding failed", err);
+    // Rollback the document so no orphaned record without chunks
+    await supabase.from("documents").delete().eq("id", data.id);
+    return NextResponse.json(
+      { error: "Document saved but embedding failed. Please try uploading again." },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ document: data });
