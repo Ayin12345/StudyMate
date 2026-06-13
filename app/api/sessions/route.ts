@@ -2,14 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
 export async function GET(req: NextRequest) {
+  const id = req.nextUrl.searchParams.get("id");
   const userId = req.nextUrl.searchParams.get("userId");
+
+  if (id) {
+    const { data, error } = await supabase
+      .from("sessions")
+      .select("id, title, subject, created_at")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      console.error("[GET /api/sessions]", error);
+      return NextResponse.json({ error: "Failed to load session." }, { status: 500 });
+    }
+
+    return NextResponse.json({ session: data });
+  }
+
   if (!userId) {
     return NextResponse.json({ error: "userId is required" }, { status: 400 });
   }
 
   const { data, error } = await supabase
     .from("sessions")
-    .select("id, title, created_at")
+    .select("id, title, subject, created_at")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(50);
@@ -23,14 +40,14 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { userId } = await req.json() as { userId?: string };
+  const { userId, subject } = await req.json() as { userId?: string; subject?: string | null };
   if (!userId) {
     return NextResponse.json({ error: "userId is required" }, { status: 400 });
   }
 
   const { data, error } = await supabase
     .from("sessions")
-    .insert({ user_id: userId, title: null })
+    .insert({ user_id: userId, title: null, subject: subject ?? null })
     .select()
     .single();
 

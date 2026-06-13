@@ -14,3 +14,13 @@
 .session-enter {
   animation: session-slide-in 0.35s ease-out;
 }
+
+/* Hide scrollbars everywhere while keeping scroll functionality */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge/IE */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}

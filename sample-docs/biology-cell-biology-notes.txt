@@ -1,0 +1,51 @@
+Cell Biology — Chapter 3 Notes
+
+The Cell
+The cell is the basic structural and functional unit of all living organisms. Two major categories:
+- Prokaryotic cells: no membrane-bound nucleus (bacteria, archaea)
+- Eukaryotic cells: membrane-bound nucleus (plants, animals, fungi, protists)
+
+Cell Membrane (Plasma Membrane)
+A phospholipid bilayer that separates the cell interior from the outside environment. Phospholipids have a hydrophilic (water-loving) head and a hydrophobic (water-fearing) tail. The bilayer forms spontaneously — tails face inward, heads face outward.
+
+Fluid mosaic model: the membrane is fluid (lipids and proteins can move laterally) and mosaic (proteins are embedded throughout).
+
+Membrane proteins:
+- Channel proteins: allow specific molecules to pass through
+- Carrier proteins: bind and transport molecules across
+- Receptor proteins: receive chemical signals
+- Glycoproteins: cell recognition and communication
+
+Transport Across the Membrane
+Passive transport (no energy required):
+- Simple diffusion: small nonpolar molecules (O₂, CO₂) move down concentration gradient
+- Facilitated diffusion: ions and polar molecules use channel/carrier proteins
+- Osmosis: water moves from low solute concentration to high solute concentration
+
+Active transport (requires ATP):
+- Moves molecules against concentration gradient
+- Example: Na⁺/K⁺ ATPase pump — moves 3 Na⁺ out and 2 K⁺ in per ATP
+
+Endocytosis: cell engulfs material by wrapping membrane around it (phagocytosis, pinocytosis)
+Exocytosis: vesicles fuse with membrane to release contents outside
+
+Organelles
+Nucleus: contains DNA, site of transcription. Surrounded by nuclear envelope with pores.
+Mitochondria: site of cellular respiration (ATP production). Has inner and outer membrane. Own DNA — evidence of endosymbiotic origin.
+Ribosomes: site of protein synthesis. Free ribosomes → proteins for cytoplasm. Bound ribosomes (on ER) → proteins for secretion or membranes.
+Endoplasmic Reticulum (ER):
+  - Rough ER: studded with ribosomes, processes and folds proteins
+  - Smooth ER: lipid synthesis, drug detoxification
+Golgi Apparatus: receives proteins from ER, modifies, sorts, and ships them. Cis face (receives) → trans face (ships).
+Lysosomes: contain hydrolytic enzymes. Digest waste, damaged organelles (autophagy), foreign material.
+Vacuoles: storage. Plant cells have large central vacuole for turgor pressure.
+Chloroplasts (plants): site of photosynthesis. Contain thylakoids (light reactions) and stroma (Calvin cycle). Own DNA.
+
+Cell Wall
+Present in plants, fungi, bacteria — not in animal cells. Provides structural support. Plant cell wall: made of cellulose. Fungi: chitin. Bacteria: peptidoglycan.
+
+Cell Cycle
+G1 → S → G2 → M (Mitosis) → Cytokinesis
+S phase: DNA replication
+Mitosis phases: Prophase, Metaphase, Anaphase, Telophase
+Checkpoints: G1 checkpoint (commit to divide?), G2 checkpoint (DNA replicated correctly?), Spindle checkpoint (chromosomes attached to spindle?).

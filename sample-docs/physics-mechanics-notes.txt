@@ -1,0 +1,53 @@
+Physics — Classical Mechanics Notes
+
+Kinematics
+Displacement is the change in position (vector); distance is the total path length (scalar).
+Velocity = displacement / time. Speed = distance / time.
+Acceleration = change in velocity / time.
+Kinematic equations (constant acceleration):
+  v = v₀ + at
+  x = x₀ + v₀t + ½at²
+  v² = v₀² + 2a(x - x₀)
+Free fall: a = -g ≈ -9.8 m/s² near Earth's surface.
+
+Newton's Laws of Motion
+First law (inertia): an object at rest stays at rest, and an object in motion stays in motion at constant velocity, unless acted on by a net external force.
+Second law: F = ma. Net force equals mass times acceleration.
+Third law: for every action, there is an equal and opposite reaction.
+Weight = mg (force of gravity on a mass).
+Normal force: the support force perpendicular to a surface.
+Friction: f = μN, where μ is the coefficient of friction (static or kinetic).
+
+Work, Energy, and Power
+Work = F · d · cos(θ), where θ is the angle between force and displacement.
+Kinetic energy: KE = ½mv².
+Gravitational potential energy: PE = mgh.
+Conservation of energy: in the absence of friction, total mechanical energy (KE + PE) is constant.
+Power = work / time = F · v.
+The work-energy theorem: net work done on an object equals its change in kinetic energy.
+
+Momentum and Collisions
+Momentum p = mv. Impulse J = FΔt = Δp.
+Conservation of momentum: total momentum before a collision equals total momentum after, in an isolated system.
+Elastic collisions: both momentum and kinetic energy are conserved.
+Inelastic collisions: momentum is conserved, but kinetic energy is not (some converts to heat/sound/deformation).
+Perfectly inelastic collision: objects stick together after colliding.
+
+Circular Motion and Gravitation
+Centripetal acceleration: a_c = v²/r, directed toward the center of the circle.
+Centripetal force: F_c = mv²/r — provided by tension, gravity, friction, or normal force.
+Newton's law of universal gravitation: F = G(m₁m₂)/r².
+Orbital motion: gravity provides the centripetal force for satellites and planets.
+
+Rotational Motion
+Angular displacement, velocity, and acceleration are the rotational analogs of linear displacement, velocity, and acceleration.
+Torque: τ = rF sin(θ) — the rotational analog of force.
+Moment of inertia (I) depends on mass distribution relative to the axis of rotation.
+Angular momentum: L = Iω. Conserved when no external torque acts on a system.
+
+Simple Harmonic Motion and Waves
+A mass on a spring oscillates with restoring force F = -kx (Hooke's Law).
+Period of a spring-mass system: T = 2π√(m/k).
+Period of a simple pendulum: T = 2π√(L/g) for small angles.
+Wave speed: v = fλ, where f is frequency and λ is wavelength.
+Mechanical waves require a medium; transverse waves vibrate perpendicular to travel direction, longitudinal waves vibrate parallel.

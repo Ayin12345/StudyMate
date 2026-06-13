@@ -1,0 +1,65 @@
+Linear Algebra — Midterm Review Notes
+
+Vectors
+A vector in Rⁿ is an ordered list of n real numbers. Represented as a column.
+Vector addition: add component-wise. Scalar multiplication: multiply each component.
+Dot product: u · v = Σ uᵢvᵢ. Result is a scalar.
+u · v = |u| |v| cos(θ) — used to find angle between vectors.
+Vectors are orthogonal if u · v = 0.
+
+Matrices
+An m×n matrix has m rows and n columns. Matrix multiplication: A (m×n) × B (n×p) = C (m×p).
+Element cᵢⱼ = dot product of row i of A with column j of B.
+Matrix multiplication is NOT commutative: AB ≠ BA in general.
+
+Special matrices:
+- Identity matrix I: diagonal of 1s, zeros elsewhere. AI = IA = A.
+- Zero matrix: all entries 0.
+- Symmetric matrix: A = Aᵀ
+- Diagonal matrix: non-zero entries only on diagonal.
+
+Transpose: (Aᵀ)ᵢⱼ = Aⱼᵢ. Flip rows and columns. (AB)ᵀ = BᵀAᵀ.
+
+Determinant
+Only defined for square matrices. det(A) ≠ 0 ↔ A is invertible.
+2×2: det([[a,b],[c,d]]) = ad - bc
+For larger matrices: cofactor expansion along any row or column.
+det(AB) = det(A) · det(B)
+det(Aᵀ) = det(A)
+
+Matrix Inverse
+A⁻¹ exists iff det(A) ≠ 0. A A⁻¹ = A⁻¹ A = I.
+Finding inverse: augment [A | I] and row reduce to [I | A⁻¹].
+(AB)⁻¹ = B⁻¹ A⁻¹
+
+Systems of Linear Equations
+Ax = b. Solve using row reduction (Gaussian elimination).
+Three possible outcomes:
+1. Unique solution: det(A) ≠ 0
+2. No solution: inconsistent system (row of zeros = nonzero)
+3. Infinitely many solutions: free variables exist
+
+Row operations:
+- Swap two rows
+- Multiply a row by a nonzero scalar
+- Add a multiple of one row to another
+These preserve the solution set.
+
+Row echelon form: leading entry in each row is to the right of the one above.
+Reduced row echelon form (RREF): each leading entry is 1 and only nonzero entry in its column.
+
+Vector Spaces
+A vector space V satisfies 10 axioms (closure under addition and scalar multiplication, commutativity, associativity, identity, inverse, distributivity).
+Subspace: a subset that is itself a vector space. Must contain the zero vector, be closed under addition and scalar multiplication.
+
+Basis and Dimension
+A basis for V is a set of vectors that is linearly independent and spans V.
+Dimension = number of vectors in any basis.
+Linear independence: no vector in the set can be written as a linear combination of the others.
+Test: put vectors as columns in a matrix → row reduce → no free variables → independent.
+
+Eigenvalues and Eigenvectors
+Av = λv for nonzero vector v. λ is eigenvalue, v is eigenvector.
+Find eigenvalues: solve det(A - λI) = 0 (characteristic equation).
+Find eigenvectors: solve (A - λI)v = 0 for each λ.
+A matrix is diagonalizable if it has n linearly independent eigenvectors: A = PDP⁻¹.

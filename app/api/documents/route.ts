@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   const { data, error } = await supabase
     .from("documents")
-    .select("id, tags, title, text, date")
+    .select("id, supertag, tags, title, text, date")
     .eq("session_id", userId)
     .order("date", { ascending: true });
 
@@ -24,16 +24,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json() as { userId?: string; tags?: string[]; title?: string; text?: string };
-  const { userId, tags, title, text } = body;
+  const body = await req.json() as { userId?: string; supertag?: string; tags?: string[]; title?: string; text?: string };
+  const { userId, supertag, tags, title, text } = body;
 
-  if (!userId || !title?.trim() || !text?.trim() || !Array.isArray(tags) || tags.length === 0) {
-    return NextResponse.json({ error: "userId, title, tags, and text are required" }, { status: 400 });
+  if (!userId || !title?.trim() || !text?.trim() || !supertag?.trim() || !Array.isArray(tags) || tags.length === 0) {
+    return NextResponse.json({ error: "userId, supertag, tags, title, and text are required" }, { status: 400 });
   }
 
   const { data, error } = await supabase
     .from("documents")
-    .insert({ session_id: userId, tags, title: title.trim(), text: text.trim() })
+    .insert({ session_id: userId, supertag: supertag.trim(), tags, title: title.trim(), text: text.trim() })
     .select()
     .single();
 
@@ -70,6 +70,33 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ document: data });
+}
+
+export async function PATCH(req: NextRequest) {
+  const id = req.nextUrl.searchParams.get("id");
+  if (!id) {
+    return NextResponse.json({ error: "id is required" }, { status: 400 });
+  }
+
+  const { supertag, tags } = await req.json() as { supertag?: string; tags?: string[] };
+  const update: Record<string, unknown> = {};
+  if (supertag?.trim()) update.supertag = supertag.trim();
+  if (Array.isArray(tags) && tags.length > 0) update.tags = tags;
+  if (Object.keys(update).length === 0) {
+    return NextResponse.json({ error: "supertag or tags is required" }, { status: 400 });
+  }
+
+  const { error } = await supabase
+    .from("documents")
+    .update(update)
+    .eq("id", id);
+
+  if (error) {
+    console.error("[PATCH /api/documents]", error);
+    return NextResponse.json({ error: "Failed to update document." }, { status: 500 });
+  }
+
+  return NextResponse.json({ ok: true });
 }
 
 export async function DELETE(req: NextRequest) {

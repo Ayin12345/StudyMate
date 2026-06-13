@@ -1,0 +1,72 @@
+Data Structures & Algorithms — Practice Problems
+
+Problem 1: Two Sum
+Given an array of integers nums and an integer target, return the indices of the two numbers that add up to target.
+
+Example: nums = [2, 7, 11, 15], target = 9 → [0, 1]
+
+Brute force: O(n²) — check every pair.
+Optimal: Use a hash map. For each element x, check if (target - x) exists in the map. O(n) time, O(n) space.
+
+---
+
+Problem 2: Valid Parentheses
+Given a string of brackets '(', ')', '{', '}', '[', ']', determine if the input string is valid.
+
+Approach: Use a stack. Push opening brackets. When you see a closing bracket, check if the top of the stack is the matching opener. If not, return false. At the end, stack must be empty.
+
+Time: O(n), Space: O(n)
+
+---
+
+Problem 3: Merge Two Sorted Lists
+Merge two sorted linked lists and return the sorted result.
+
+Approach: Use a dummy head node. Compare the current nodes of both lists. Append the smaller one and advance that pointer. When one list is exhausted, append the remainder of the other.
+
+Time: O(m + n), Space: O(1)
+
+---
+
+Problem 4: Maximum Depth of Binary Tree
+Find the maximum depth (number of nodes along the longest root-to-leaf path).
+
+Recursive approach:
+  depth(node) = 0 if node is null
+  depth(node) = 1 + max(depth(node.left), depth(node.right))
+
+Time: O(n), Space: O(h) for call stack
+
+---
+
+Problem 5: Number of Islands
+Given a 2D grid of '1' (land) and '0' (water), count the number of islands.
+
+Approach: DFS/BFS. For each unvisited '1', increment count and flood-fill to mark all connected '1's as visited.
+
+Time: O(m × n), Space: O(m × n) worst case for recursion stack
+
+---
+
+Problem 6: LRU Cache
+Design a data structure that follows the Least Recently Used (LRU) cache policy.
+
+Implementation: Combine a hash map with a doubly linked list.
+- Hash map provides O(1) access to nodes.
+- Doubly linked list maintains usage order (most recent at head).
+- On get: move accessed node to head.
+- On put: add to head; if over capacity, remove tail.
+
+All operations O(1).
+
+---
+
+Problem 7: Course Schedule (Cycle Detection)
+Given n courses and prerequisites, determine if it is possible to finish all courses.
+
+Model as directed graph. Problem reduces to: does the graph have a cycle?
+
+Use DFS with three states: unvisited, visiting, visited.
+If you reach a node in the "visiting" state, there is a cycle → return false.
+
+Time: O(V + E), Space: O(V)

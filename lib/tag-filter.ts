@@ -18,6 +18,21 @@ export function pickTopic(tags: string[]): { subject: string; topic: string } {
   return { subject, topic };
 }
 
+// Maps a study event's specific tag (`subject`/`topic`) back to the broad
+// supertag of the document it came from (e.g. "Data Structures" -> "Computer Science").
+// Falls back to the event's own `supertag` column, then the tag itself.
+export function buildSupertagResolver(docs: { tags: string[]; supertag: string | null }[]) {
+  const tagToSupertag = new Map<string, string>();
+  for (const d of docs) {
+    if (!d.supertag) continue;
+    for (const t of d.tags ?? []) {
+      if (!tagToSupertag.has(t)) tagToSupertag.set(t, d.supertag);
+    }
+  }
+  return (e: { subject: string; topic: string; supertag?: string | null }): string =>
+    tagToSupertag.get(e.subject) ?? tagToSupertag.get(e.topic) ?? e.supertag ?? e.subject ?? "General";
+}
+
 export function classifyQuestion(question: string): { confusionScore: number; questionType: string } {
   const q = question.toLowerCase();
   const isConfusion = /\b(confused|don'?t (understand|get)|not sure|unclear|struggling|lost|help me understand|can you (explain|clarify))\b/.test(q);

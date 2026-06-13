@@ -1,0 +1,45 @@
+Data Structures — Week 4 Notes
+
+Arrays
+An array is a fixed-size, contiguous block of memory. Access is O(1) by index. Insertion and deletion in the middle are O(n) because elements must be shifted.
+
+Linked Lists
+A linked list consists of nodes, each holding a value and a pointer to the next node. Insertion at the head is O(1). Search is O(n). No random access.
+
+Singly linked: each node has one pointer (next).
+Doubly linked: each node has two pointers (prev, next). Allows O(1) removal when you already have a reference to the node.
+
+Stacks
+LIFO — Last In, First Out. Supported operations: push, pop, peek. Can be implemented with an array or linked list. Used for: function call stack, undo operations, DFS.
+
+Queues
+FIFO — First In, First Out. Supported operations: enqueue, dequeue. Implemented with a linked list or circular array. Used for: BFS, task scheduling, print queues.
+
+Hash Tables
+Maps keys to values using a hash function. Average-case O(1) for insert, delete, and lookup. Worst-case O(n) due to collisions.
+
+Collision resolution strategies:
+- Chaining: each bucket holds a linked list of entries.
+- Open addressing: probe for the next empty slot (linear probing, quadratic probing, double hashing).
+
+Load factor = number of entries / number of buckets. Keep below 0.7 for good performance.
+
+Trees
+A tree is a hierarchical data structure with a root node and child nodes. Each node has at most one parent (except the root).
+
+Binary Tree: each node has at most 2 children (left, right).
+Binary Search Tree (BST): left child < parent < right child. Search, insert, delete are O(h) where h is height. Balanced BST gives O(log n).
+
+Balanced BSTs: AVL tree, Red-Black tree. Automatically rebalance on insert/delete to maintain O(log n) height.
+
+Heaps
+A complete binary tree satisfying the heap property. Min-heap: parent ≤ children. Max-heap: parent ≥ children. Used to implement priority queues. Insert and delete-min/max are O(log n). Build heap from array is O(n).
+
+Graphs
+A set of vertices (nodes) connected by edges. Can be directed or undirected, weighted or unweighted.
+
+Representations:
+- Adjacency matrix: O(V²) space, O(1) edge lookup.
+- Adjacency list: O(V + E) space, O(degree) edge lookup.
+
+Common algorithms: BFS (shortest path in unweighted graph), DFS (topological sort, cycle detection), Dijkstra (shortest path in weighted graph), Bellman-Ford (handles negative weights).

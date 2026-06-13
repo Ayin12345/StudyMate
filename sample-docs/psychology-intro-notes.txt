@@ -1,0 +1,44 @@
+Introduction to Psychology — Key Concepts
+
+Major Perspectives in Psychology
+Biological: behavior is explained through genetics, brain structures, and neurochemistry.
+Behavioral: focuses on observable behavior and how it's shaped by the environment through conditioning.
+Cognitive: studies internal mental processes like memory, perception, language, and problem-solving.
+Psychodynamic: rooted in Freud's ideas, emphasizes unconscious drives and early childhood experiences.
+Humanistic: emphasizes free will, personal growth, and self-actualization (Maslow, Rogers).
+
+Research Methods
+Experiments: manipulate an independent variable to observe effects on a dependent variable; allow causal conclusions.
+Correlational studies: measure the relationship between two variables without manipulation; cannot establish causation.
+Case studies: in-depth examination of a single individual or group; rich detail but limited generalizability.
+Surveys: gather self-reported data from large samples; can be affected by response bias.
+Confounding variables: outside factors that can affect the outcome and must be controlled for.
+
+Neurons and the Nervous System
+Neurons communicate via electrical impulses (action potentials) and chemical signals (neurotransmitters) across synapses.
+Key neurotransmitters: dopamine (reward, motivation), serotonin (mood), GABA (inhibition), acetylcholine (muscle action, learning).
+The central nervous system (CNS) consists of the brain and spinal cord; the peripheral nervous system (PNS) connects the CNS to the rest of the body.
+Major brain structures: the hippocampus (memory formation), amygdala (emotion, fear), prefrontal cortex (decision-making, impulse control), and cerebellum (balance, coordination).
+
+Learning
+Classical conditioning (Pavlov): a neutral stimulus becomes associated with an unconditioned stimulus to produce a conditioned response.
+Operant conditioning (Skinner): behavior is shaped by reinforcement (increases behavior) and punishment (decreases behavior).
+Reinforcement schedules: fixed-ratio, variable-ratio, fixed-interval, variable-interval — variable-ratio schedules produce the highest, most resistant response rates.
+Observational learning (Bandura): learning by watching and imitating others (e.g., the Bobo doll experiment).
+
+Memory
+Three stages: encoding (input), storage (retention), retrieval (output).
+Sensory memory holds information very briefly; short-term/working memory holds a limited amount for a short time (~7 items, ~20-30 seconds).
+Long-term memory has a vast capacity and can be divided into explicit (declarative: facts and events) and implicit (procedural: skills and habits) memory.
+Forgetting can result from encoding failure, decay, interference, or retrieval failure.
+
+Development
+Piaget's stages of cognitive development: sensorimotor, preoperational, concrete operational, formal operational.
+Attachment theory (Bowlby/Ainsworth): early bonds with caregivers shape later relationships; attachment styles include secure, avoidant, and anxious/ambivalent.
+Erikson's psychosocial stages describe a series of conflicts (e.g., trust vs. mistrust, identity vs. role confusion) faced across the lifespan.
+
+Social Psychology
+Conformity: adjusting behavior to match a group, even without direct pressure (Asch's line experiments).
+Obedience: following the orders of an authority figure, even when it conflicts with personal conscience (Milgram's experiments).
+Cognitive dissonance: discomfort from holding conflicting beliefs or behaviors, often resolved by changing one's attitude.
+Fundamental attribution error: the tendency to overemphasize personality-based explanations for others' behavior while underemphasizing situational factors.

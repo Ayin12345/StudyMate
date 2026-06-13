@@ -1,0 +1,46 @@
+Microeconomics — Core Concepts
+
+Supply and Demand
+Demand: the quantity of a good consumers are willing and able to buy at various prices, holding other factors constant.
+The Law of Demand: as price increases, quantity demanded decreases (downward-sloping demand curve).
+Supply: the quantity of a good producers are willing to sell at various prices.
+The Law of Supply: as price increases, quantity supplied increases (upward-sloping supply curve).
+Equilibrium: the price and quantity at which supply equals demand. Surpluses occur above equilibrium price; shortages occur below it.
+Shifts vs. movements: a change in price causes movement along a curve; a change in any other factor (income, preferences, input costs) shifts the entire curve.
+
+Elasticity
+Price elasticity of demand = % change in quantity demanded / % change in price.
+Elastic demand (|E| > 1): quantity demanded is very responsive to price changes (e.g., luxury goods).
+Inelastic demand (|E| < 1): quantity demanded is not very responsive (e.g., necessities like insulin).
+Determinants of elasticity: availability of substitutes, necessity vs. luxury, proportion of income spent, time horizon.
+
+Consumer and Producer Theory
+Utility: the satisfaction a consumer gets from consuming a good. Marginal utility is the additional satisfaction from one more unit.
+Diminishing marginal utility: each additional unit consumed provides less additional satisfaction than the previous one.
+Consumers maximize utility where the marginal utility per dollar is equal across all goods.
+Production function: relates inputs (labor, capital) to output. Marginal product is the additional output from one more unit of input.
+Diminishing marginal returns: as more of one input is added (holding others fixed), the additional output eventually decreases.
+
+Costs of Production
+Fixed costs do not change with output (e.g., rent); variable costs change with output (e.g., materials, labor).
+Total cost = fixed cost + variable cost.
+Marginal cost: the additional cost of producing one more unit. A firm maximizes profit where marginal revenue = marginal cost.
+Average total cost = total cost / quantity. Economies of scale occur when average cost decreases as output increases.
+
+Market Structures
+Perfect competition: many small firms, identical products, free entry/exit, firms are "price takers."
+Monopoly: a single seller with significant market power and barriers to entry; sets price above marginal cost.
+Monopolistic competition: many firms selling differentiated products, some pricing power, free entry/exit.
+Oligopoly: a few large firms dominate the market; firms are interdependent and may engage in strategic behavior (e.g., game theory, collusion).
+
+Market Failures and Government Intervention
+Externalities: costs or benefits of a transaction that affect third parties (e.g., pollution = negative externality).
+Public goods: non-excludable and non-rivalrous (e.g., national defense) — often underprovided by free markets.
+Price ceilings (max price, e.g., rent control) can cause shortages if set below equilibrium.
+Price floors (min price, e.g., minimum wage) can cause surpluses if set above equilibrium.
+Taxes and subsidies: governments use taxes to discourage activities (e.g., taxing pollution) and subsidies to encourage them (e.g., subsidizing renewable energy).
+
+Comparative Advantage and Trade
+Absolute advantage: the ability to produce more of a good using the same resources.
+Comparative advantage: the ability to produce a good at a lower opportunity cost than another producer.
+Countries (or individuals) gain from trade by specializing in goods where they have a comparative advantage and trading for the rest.

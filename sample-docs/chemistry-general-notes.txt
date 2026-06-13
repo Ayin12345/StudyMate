@@ -1,0 +1,55 @@
+General Chemistry — Unit Review Notes
+
+Atomic Structure
+An atom consists of protons (+), neutrons (neutral), and electrons (-).
+Atomic number (Z) = number of protons. Mass number (A) = protons + neutrons.
+Isotopes: same element, different number of neutrons.
+Electrons occupy energy levels (shells); each shell holds up to 2n² electrons.
+Valence electrons are in the outermost shell and determine chemical behavior.
+
+The Periodic Table
+Elements are arranged by increasing atomic number.
+Groups (columns) share similar valence electron configurations and chemical properties.
+Periods (rows) represent the highest energy level occupied by electrons.
+Trends across a period (left to right): atomic radius decreases, electronegativity increases, ionization energy increases.
+Trends down a group: atomic radius increases, electronegativity decreases, ionization energy decreases.
+
+Chemical Bonding
+Ionic bonds: transfer of electrons between a metal and a nonmetal, forming charged ions held together by electrostatic attraction.
+Covalent bonds: sharing of electron pairs between nonmetals. Can be single, double, or triple bonds.
+Polar covalent bonds: unequal sharing of electrons due to differences in electronegativity.
+Metallic bonds: a "sea of electrons" shared among metal cations, giving conductivity and malleability.
+
+Chemical Reactions and Equations
+A balanced equation has equal numbers of each atom on both sides (conservation of mass).
+Types of reactions: synthesis (A + B → AB), decomposition (AB → A + B), single replacement, double replacement, combustion.
+Stoichiometry: use mole ratios from the balanced equation to convert between reactants and products.
+Limiting reactant: the reactant that runs out first and determines the maximum amount of product.
+
+The Mole and Molar Mass
+1 mole = 6.022 × 10²³ particles (Avogadro's number).
+Molar mass (g/mol) = sum of atomic masses in the formula.
+moles = mass (g) / molar mass (g/mol)
+
+Acids, Bases, and pH
+Acids donate H⁺ ions (protons); bases accept H⁺ ions or donate OH⁻.
+pH = -log[H⁺]. pH < 7 is acidic, pH = 7 is neutral, pH > 7 is basic.
+Strong acids/bases fully dissociate in water; weak acids/bases only partially dissociate.
+Neutralization: acid + base → salt + water.
+
+Gas Laws
+Boyle's Law: P₁V₁ = P₂V₂ (constant temperature).
+Charles's Law: V₁/T₁ = V₂/T₂ (constant pressure).
+Combined gas law: P₁V₁/T₁ = P₂V₂/T₂.
+Ideal gas law: PV = nRT, where R = 0.0821 L·atm/(mol·K).
+
+Thermochemistry
+Exothermic reactions release energy (ΔH < 0); endothermic reactions absorb energy (ΔH > 0).
+Enthalpy (H) is the heat content of a system at constant pressure.
+Hess's Law: the total enthalpy change is the same regardless of the number of steps taken.
+
+Reaction Rates and Equilibrium
+Reaction rate depends on concentration, temperature, surface area, and presence of a catalyst.
+Catalysts speed up reactions by lowering the activation energy without being consumed.
+At equilibrium, the forward and reverse reaction rates are equal; concentrations remain constant.
+Le Chatelier's Principle: if a system at equilibrium is disturbed, it shifts to counteract the disturbance.

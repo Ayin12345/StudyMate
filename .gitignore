@@ -3,3 +3,6 @@ node_modules/
 .env.local
 .env*.local
 *.tsbuildinfo
+.claude/
+.playwright-mcp/
+Workflow/
