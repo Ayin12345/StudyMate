@@ -60,6 +60,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "sessionId and content are required" }, { status: 400 });
     }
 
+    // Rewrite the question into a clean retrieval query — strips slang/filler so casual
+    // phrasing ("omg plz help wit heaps idk what they are") still embeds close to notes
+    // about "heaps". Runs in parallel with the loads below; only used for embedding/retrieval.
+    const queryRewritePromise = client.messages
+      .create({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 60,
+        messages: [
+          {
+            role: "user",
+            content:
+              `Rewrite the question below as a short, neutral search query for retrieving study notes. ` +
+              `Strip filler words, slang, and emotion, but keep the core academic topic and intent. ` +
+              `Reply with only the rewritten query, no quotes or explanation.\n\nQuestion: ${content}`,
+          },
+        ],
+      })
+      .then((r) => (r.content[0].type === "text" ? r.content[0].text.trim() : content))
+      .catch(() => content);
+
     // Load conversation history + report threshold data in parallel
     const [
       { data: rows, error: loadError },
@@ -103,8 +123,9 @@ export async function POST(req: NextRequest) {
     const shouldGenerateReport =
       !isGenerating && newEventsSinceLastReport + 1 >= REPORT_THRESHOLD;
 
-    // Embed the question and retrieve the most relevant chunks
-    const queryEmbedding = await getEmbedding(content);
+    // Embed the rewritten (cleaned-up) question and retrieve the most relevant chunks
+    const searchQuery = await queryRewritePromise;
+    const queryEmbedding = await getEmbedding(searchQuery);
 
     const { data: chunks, error: rpcError } = await supabase.rpc("match_chunks", {
       query_embedding: queryEmbedding,
@@ -130,7 +151,8 @@ export async function POST(req: NextRequest) {
     );
 
     console.log(
-      "[/api/chat] chunks retrieved:",
+      "[/api/chat] search query:", searchQuery,
+      "| chunks retrieved:",
       rawChunks.map((c) => ({
         similarity: c.similarity.toFixed(3),
         relevant: c.similarity >= MIN_SIMILARITY,
